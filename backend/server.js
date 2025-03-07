@@ -6,14 +6,14 @@ const helmet = require("helmet");
 const compression = require("compression");
 const workoutRoutes = require("./routes/workouts");
 const userRoutes = require("./routes/user");
-
+const morgan = require("morgan");
 const app = express();
 
 // Security middlewares
 
 app.use(helmet());
 app.use(compression());
-
+app.use(morgan("dev"));
 app.use(express.json());
 
 app.use((req, res, next) => {

@@ -57,23 +57,23 @@ function EditForm({ workout, setIsEditFormVisible }) {
 	const { user } = useAuthContext()
 
 	const handleSubmit = async (e) => {
-		if (1) {
-			return
-		}
-
 		e.preventDefault()
+
+		// Check if the user is logged in
 		if (!user || !user.token) {
 			setError("You must be logged in first")
 			return
 		}
 
-		const SubmitWorkout = { title, reps, load }
-
+		// Check for empty fields
 		if (!title || !reps || !load) {
 			setIsEmpty(true)
 			return
 		}
-		console.log(SubmitWorkout)
+
+		const SubmitWorkout = { title, reps, load }
+
+		// Send the PATCH request to update the workout
 		const response = await fetch(`${baseURL}/api/workouts/${workout._id}`, {
 			method: "PATCH",
 			body: JSON.stringify(SubmitWorkout),
@@ -85,14 +85,14 @@ function EditForm({ workout, setIsEditFormVisible }) {
 
 		const data = await response.json()
 
+		// Handle errors
 		if (!response.ok) {
 			setError(data.err.message)
 		}
 
-		console.log(data.workout)
+		// If successful, dispatch the updated workout and reset form
 		if (response.ok) {
 			dispatch({ type: "EDIT_WORKOUT", payload: data.workout })
-
 			setTitle("")
 			setLoad("")
 			setReps("")
@@ -116,11 +116,10 @@ function EditForm({ workout, setIsEditFormVisible }) {
 							label="Exercise"
 							variant="outlined"
 							sx={{ my: 2 }}
-							onChange={(e) => {
-								setTitle(e.target.value)
-							}}
+							onChange={(e) => setTitle(e.target.value)}
 							value={title}
 							error={isEmpty && !title}
+							helperText={isEmpty && !title ? "Please fill in this field" : ""}
 						/>
 						<TextField
 							id="outlined-basic"
@@ -128,11 +127,10 @@ function EditForm({ workout, setIsEditFormVisible }) {
 							variant="outlined"
 							type="number"
 							sx={{ my: 2 }}
-							onChange={(e) => {
-								setReps(e.target.value)
-							}}
+							onChange={(e) => setReps(e.target.value)}
 							value={reps}
 							error={isEmpty && !reps}
+							helperText={isEmpty && !reps ? "Please fill in this field" : ""}
 						/>
 						<TextField
 							id="outlined-basic"
@@ -140,32 +138,23 @@ function EditForm({ workout, setIsEditFormVisible }) {
 							variant="outlined"
 							type="number"
 							InputProps={{
-								endAdornment: (
-									<InputAdornment position="end">kg</InputAdornment>
-								),
+								endAdornment: <InputAdornment position="end">kg</InputAdornment>,
 							}}
 							sx={{ my: 2 }}
-							onChange={(e) => {
-								setLoad(e.target.value)
-							}}
+							onChange={(e) => setLoad(e.target.value)}
 							value={load}
 							error={isEmpty && !load}
+							helperText={isEmpty && !load ? "Please fill in this field" : ""}
 						/>
 					</div>
 					<Button type="submit" variant="outlined">
-						Add Workout
+						Update Workout
 					</Button>
-					{isEmpty && (
+					{/* Show error message if form is incomplete or user is not logged in */}
+					{(isEmpty || error) && (
 						<div className="mt-4">
 							<Alert variant="outlined" severity="error">
-								Please fill in all the details
-							</Alert>
-						</div>
-					)}
-					{error && (
-						<div className="mt-4">
-							<Alert variant="outlined" severity="error">
-								You must be logged in first
+								{isEmpty ? "Please fill in all the details" : error}
 							</Alert>
 						</div>
 					)}
