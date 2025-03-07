@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import  { useState } from "react"
 import TextField from "@mui/material/TextField"
 import InputAdornment from "@mui/material/InputAdornment"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
@@ -137,13 +137,13 @@ function WorkoutForm() {
 						value={load}
 						error={isEmpty && !load}
 					/>
-					<Buton
+					<Button
 						type="submit"
 						variant="outlined"
 						sx={{ my: 2, alignSelf: "flex-start" }}
 					>
 						Add Workout
-					</Buton>
+					</Button>
 
 					{isEmpty && (
 						<div className="mt-4">
