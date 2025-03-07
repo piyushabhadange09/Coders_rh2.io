@@ -8,7 +8,7 @@ import TextField from "@mui/material/TextField"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import { useWorkoutsContext } from "../hooks/useWorkoutContext"
 import { useAuthContext } from "../hooks/useAuthContext"
-import { baseURL } from "../url"
+import { baseURL }  from "../url"
 
 const theme = createTheme({
 	components: {
